@@ -4,54 +4,60 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>搞钱天赋测试 — 你的性格适合靠什么赚钱？</title>
-  <style>
-    :root{
-      --bg:#0f1724;
-      --card:#0b1220;
-      --accent:#27a0ff;
-      --muted:#9aa7bf;
-      --glass: rgba(255,255,255,0.04);
-      --success:#28c76f;
+<style>
+    :root {
+      --primary: #6366f1; /* 活力紫色 */
+      --secondary: #a5b4fc;
+      --bg: #f8fafc; /* 浅灰色背景 */
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --accent: #f43f5e; /* 点缀红 */
     }
-    html,body{height:100%;margin:0;font-family:Inter, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", sans-serif;background:
-      linear-gradient(180deg,#071225 0%, #08162a 60%);color:#e6eef8;}
-    .wrap{max-width:900px;margin:28px auto;padding:20px;}
-    header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
-    header h1{margin:0;font-size:20px}
-    header p{margin:0;color:var(--muted);font-size:13px}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:18px;box-shadow:0 6px 20px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03)}
-    .intro{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
-    .intro .desc{max-width:70%}
-    .progress{height:10px;background:var(--glass);border-radius:10px;overflow:hidden;margin-top:10px}
-    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#8be4ff);width:0%}
-    .questions{margin-top:12px}
-    .q{padding:12px;border-radius:10px;margin-bottom:12px;background:rgba(255,255,255,0.01);border:1px dashed rgba(255,255,255,0.02)}
-    .q h3{margin:0 0 8px 0;font-size:15px}
-    .opts{display:flex;flex-direction:column;gap:8px}
-    .opt{background:transparent;border:1px solid rgba(255,255,255,0.03);border-radius:8px;padding:10px;cursor:pointer;color:var(--muted)}
-    .opt:hover{border-color:rgba(255,255,255,0.06);transform:translateY(-2px)}
-    .opt.active{background:linear-gradient(90deg, rgba(39,160,255,0.08), rgba(139,228,255,0.03));border-color:rgba(39,160,255,0.18);color:#eaf7ff}
-    .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:10px}
-    button{background:var(--accent);border:none;color:#062233;padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:600}
-    button.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
-    .result{margin-top:18px;padding:14px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03)}
-    .result h2{margin:0 0 8px 0}
-    .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-    .tag{background:rgba(255,255,255,0.02);padding:6px 8px;border-radius:6px;color:var(--muted);font-size:13px}
-    .bars{display:flex;gap:8px;margin-top:12px}
-    .bar{flex:1;background:rgba(255,255,255,0.02);padding:8px;border-radius:8px}
-    .bar .label{font-size:13px;color:var(--muted);display:flex;justify-content:space-between}
-    .bar .meter{height:10px;background:rgba(255,255,255,0.03);border-radius:8px;margin-top:6px;overflow:hidden}
-    .meter > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#8be4ff)}
-    footer{margin-top:20px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;align-items:center}
-    @media (max-width:600px){
-      .intro{flex-direction:column;align-items:flex-start}
-      header{flex-direction:column;align-items:flex-start;gap:6px}
+    body { 
+      background: var(--bg); 
+      color: var(--text); 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.6;
     }
-    .small{font-size:13px;color:var(--muted)}
-    .share-area{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-    .copybtn{background:transparent;border:1px dashed rgba(255,255,255,0.06);color:var(--muted);padding:8px;border-radius:8px;cursor:pointer}
-  </style>
+    .wrap { max-width: 500px; margin: 0 auto; padding: 20px; } /* 窄屏显示，更有手机 App 感 */
+    .card { 
+      background: var(--card-bg); 
+      border-radius: 24px; 
+      padding: 24px; 
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+    }
+    header h1 { font-size: 24px; text-align: center; color: var(--primary); }
+    .opt { 
+      background: #f1f5f9; 
+      border: 2px solid transparent; 
+      border-radius: 16px; 
+      padding: 16px; 
+      margin-bottom: 12px;
+      transition: all 0.2s ease;
+      font-size: 16px;
+      text-align: left;
+      width: 100%;
+      color: var(--text);
+    }
+    .opt:active { transform: scale(0.98); }
+    .opt.active { 
+      background: #eef2ff; 
+      border-color: var(--primary); 
+      color: var(--primary); 
+      font-weight: bold;
+    }
+    button#next, button#submit {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      padding: 16px;
+      border-radius: 16px;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+    .progress { height: 8px; border-radius: 4px; background: #e2e8f0; margin: 20px 0; }
+    .progress i { background: var(--primary); border-radius: 4px; }
+</style>
 </head>
 <body>
   <div class="wrap">
@@ -440,4 +446,5 @@
   </script>
 </body>
 </html>
+
 
