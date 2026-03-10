@@ -1,0 +1,460 @@
+**功能概述：**
+- **包含题目与计分逻辑**（多选项单题，后端可拓展）
+- **五类“搞钱天赋”判定**：创业家 / 自由创意 / 技术专才 / 销售交际 / 投资被动
+- **响应式页面、进度条、结果解读与行动建议**
+- **支持重测与结果复制分享**
+
+下面是完整的可直接保存为 .html 的页面代码（自含 CSS/JS）：
+
+```html
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>搞钱天赋测试 — 你的性格适合靠什么赚钱？</title>
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --accent:#27a0ff;
+      --muted:#9aa7bf;
+      --glass: rgba(255,255,255,0.04);
+      --success:#28c76f;
+    }
+    html,body{height:100%;margin:0;font-family:Inter, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", sans-serif;background:
+      linear-gradient(180deg,#071225 0%, #08162a 60%);color:#e6eef8;}
+    .wrap{max-width:900px;margin:28px auto;padding:20px;}
+    header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+    header h1{margin:0;font-size:20px}
+    header p{margin:0;color:var(--muted);font-size:13px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:18px;box-shadow:0 6px 20px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03)}
+    .intro{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+    .intro .desc{max-width:70%}
+    .progress{height:10px;background:var(--glass);border-radius:10px;overflow:hidden;margin-top:10px}
+    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#8be4ff);width:0%}
+    .questions{margin-top:12px}
+    .q{padding:12px;border-radius:10px;margin-bottom:12px;background:rgba(255,255,255,0.01);border:1px dashed rgba(255,255,255,0.02)}
+    .q h3{margin:0 0 8px 0;font-size:15px}
+    .opts{display:flex;flex-direction:column;gap:8px}
+    .opt{background:transparent;border:1px solid rgba(255,255,255,0.03);border-radius:8px;padding:10px;cursor:pointer;color:var(--muted)}
+    .opt:hover{border-color:rgba(255,255,255,0.06);transform:translateY(-2px)}
+    .opt.active{background:linear-gradient(90deg, rgba(39,160,255,0.08), rgba(139,228,255,0.03));border-color:rgba(39,160,255,0.18);color:#eaf7ff}
+    .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:10px}
+    button{background:var(--accent);border:none;color:#062233;padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:600}
+    button.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+    .result{margin-top:18px;padding:14px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03)}
+    .result h2{margin:0 0 8px 0}
+    .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .tag{background:rgba(255,255,255,0.02);padding:6px 8px;border-radius:6px;color:var(--muted);font-size:13px}
+    .bars{display:flex;gap:8px;margin-top:12px}
+    .bar{flex:1;background:rgba(255,255,255,0.02);padding:8px;border-radius:8px}
+    .bar .label{font-size:13px;color:var(--muted);display:flex;justify-content:space-between}
+    .bar .meter{height:10px;background:rgba(255,255,255,0.03);border-radius:8px;margin-top:6px;overflow:hidden}
+    .meter > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#8be4ff)}
+    footer{margin-top:20px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;align-items:center}
+    @media (max-width:600px){
+      .intro{flex-direction:column;align-items:flex-start}
+      header{flex-direction:column;align-items:flex-start;gap:6px}
+    }
+    .small{font-size:13px;color:var(--muted)}
+    .share-area{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .copybtn{background:transparent;border:1px dashed rgba(255,255,255,0.06);color:var(--muted);padding:8px;border-radius:8px;cursor:pointer}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div style="width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,#0ea5ff,#7dd3fc);display:flex;align-items:center;justify-content:center;font-weight:700;color:#042027">搞钱</div>
+      <div>
+        <h1>搞钱天赋测试</h1>
+        <p>探索你的性格更适合通过哪种方式赚钱，做完测试可得到个性化建议和行动步骤。</p>
+      </div>
+    </header>
+
+    <div class="card">
+      <div class="intro">
+        <div class="desc">
+          <strong>说明：</strong> 本测试有 8 道题，每题选一个最符合你的选项。每个选项会给五类“搞钱天赋”不同的分值，最终最高得分对应你的首要天赋。
+          <div class="progress" aria-hidden="true"><i id="prog"></i></div>
+        </div>
+        <div style="min-width:160px;text-align:right">
+          <div class="small">预计时长：<strong>2-3 分钟</strong></div>
+          <div class="small" id="qcount">已答 0 / 8</div>
+        </div>
+      </div>
+
+      <div class="questions" id="questions"></div>
+
+      <div class="actions">
+        <button id="prev" class="secondary">上一步</button>
+        <button id="next">下一题</button>
+        <button id="submit" style="display:none">提交并查看结果</button>
+      </div>
+
+      <div id="resultArea" style="display:none" class="result" aria-live="polite"></div>
+
+    </div>
+
+    <footer>
+      <div class="small">仅为性格与偏好参考，非财务或法律建议。</div>
+      <div class="small">版本 1.0 · 本地运行即可</div>
+    </footer>
+  </div>
+
+  <script>
+    // 问题与选项（每个选项对应五类分数：创业, 创意/自由, 技术, 销售/交际, 投资/被动）
+    const qa = [
+      {
+        q: "遇到新机会你更倾向于？",
+        opts: [
+          {t: "立刻尝试，哪怕有风险", v:[2,0,0,1,0]},
+          {t: "先凭创意做一个小试验", v:[1,2,0,0,0]},
+          {t: "评估数据和可行性再行动", v:[0,0,2,0,0]},
+          {t: "先跟朋友/人脉沟通测反馈", v:[0,0,0,2,0]},
+          {t: "把钱投入能产生被动收益的工具", v:[0,0,0,0,2]}
+        ]
+      },
+      {
+        q: "你的工作节奏更偏好什么？",
+        opts: [
+          {t:"高强度、目标导向", v:[2,0,0,1,0]},
+          {t:"自由安排、做自己喜欢的事", v:[0,2,0,0,0]},
+          {t:"稳定、有体系性地深耕技能", v:[0,0,2,0,0]},
+          {t:"社交频繁、靠人脉推动结果", v:[1,0,0,2,0]},
+          {t:"构建可复利的资产与系统", v:[0,0,0,0,2]}
+        ]
+      },
+      {
+        q: "如果要赚钱，你最不想做的是？",
+        opts: [
+          {t:"没有掌控权，被人指挥", v:[2,0,0,0,0]},
+          {t:"天天重复没有创造性的活", v:[0,2,0,0,0]},
+          {t:"面对不断变化的无逻辑问题", v:[0,0,2,0,0]},
+          {t:"孤军作战，不与人打交道", v:[0,0,0,2,0]},
+          {t:"把所有钱都放着不动或赌运气", v:[0,0,0,0,2]}
+        ]
+      },
+      {
+        q: "你解决问题时常用的方法是？",
+        opts: [
+          {t:"快速迭代并从错误中学习", v:[2,0,0,1,0]},
+          {t:"用创意或新颖方式突破", v:[0,2,0,0,0]},
+          {t:"用技术或结构化流程解决", v:[0,0,2,0,0]},
+          {t:"动用人脉与谈判达成", v:[0,0,0,2,0]},
+          {t:"设计长期收益模型并部署资金", v:[0,0,0,0,2]}
+        ]
+      },
+      {
+        q: "当你赚到一笔钱，你通常怎么处理？",
+        opts: [
+          {t:"投入到下一个项目扩大规模", v:[2,0,0,0,0]},
+          {t:"买灵感工具或体验提升创意", v:[0,2,0,0,0]},
+          {t:"投在自我提升或设备提高产出", v:[0,0,2,0,0]},
+          {t:"拓展人脉或做公关", v:[0,0,0,2,0]},
+          {t:"配置到长期资产或被动收益", v:[0,0,0,0,2]}
+        ]
+      },
+      {
+        q: "你认为好的赚钱方式应该具备？",
+        opts: [
+          {t:"可以快速放大，规模效应强", v:[2,0,0,0,0]},
+          {t:"能表达个性并带来自由感", v:[0,2,0,0,0]},
+          {t:"门槛高但稳定可信赖", v:[0,0,2,0,0]},
+          {t:"人际网络能显著提升结果", v:[0,0,0,2,0]},
+          {t:"长期复利、少动维护", v:[0,0,0,0,2]}
+        ]
+      },
+      {
+        q: "面对失败你通常会？",
+        opts: [
+          {t:"迅速调整策略再出发", v:[2,0,0,0,0]},
+          {t:"把失败变成创作素材或经验", v:[0,2,0,0,0]},
+          {t:"分析原因、优化技术与流程", v:[0,0,2,0,0]},
+          {t:"寻求外部支持和合作者", v:[0,0,0,2,0]},
+          {t:"用更稳妥的工具减少未来风险", v:[0,0,0,0,2]}
+        ]
+      },
+      {
+        q: "你理想中的收入来源是？",
+        opts: [
+          {t:"自己创业，收入随规模上升", v:[2,0,0,0,0]},
+          {t:"靠才华与作品持续变现", v:[0,2,0,0,0]},
+          {t:"因技能被高薪聘用或承接项目", v:[0,0,2,0,0]},
+          {t:"靠人脉资源不断获得机会", v:[0,0,0,2,0]},
+          {t:"资产在后台稳步产生现金流", v:[0,0,0,0,2]}
+        ]
+      }
+    ];
+
+    // 类别标签
+    const categories = [
+      {id:'entre', name:'创业家（高风险高回报）'},
+      {id:'crea', name:'自由/创意（个体创作与内容变现）'},
+      {id:'tech', name:'技术专才（技能变现、项目承接）'},
+      {id:'sales', name:'销售/交际（人脉与谈判导向）'},
+      {id:'invest', name:'投资/被动（资产与系统化收益）'}
+    ];
+
+    // 渲染题目
+    const questionsEl = document.getElementById('questions');
+    let answers = new Array(qa.length).fill(null);
+    let current = 0;
+
+    function renderQuestions(){
+      questionsEl.innerHTML = '';
+      qa.forEach((item, idx) => {
+        const div = document.createElement('div');
+        div.className = 'q';
+        div.dataset.idx = idx;
+        div.style.display = idx===current ? 'block' : 'none';
+        const h = document.createElement('h3');
+        h.textContent = `${idx+1}. ${item.q}`;
+        div.appendChild(h);
+        const opts = document.createElement('div');
+        opts.className = 'opts';
+        item.opts.forEach((op, oi) => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'opt';
+          b.textContent = op.t;
+          b.addEventListener('click', ()=>{
+            selectOption(idx, oi);
+          });
+          if (answers[idx] === oi) b.classList.add('active');
+          opts.appendChild(b);
+        });
+        div.appendChild(opts);
+        questionsEl.appendChild(div);
+      });
+      updateProgress();
+    }
+
+    function selectOption(qidx, optidx){
+      answers[qidx] = optidx;
+      // 更新 UI
+      const qdiv = document.querySelector(`.q[data-idx="${qidx}"]`);
+      qdiv.querySelectorAll('.opt').forEach((el,i)=> el.classList.toggle('active', i===optidx));
+      updateProgress();
+      // 自动下一题（如果不是最后一题）
+      if (qidx < qa.length-1) {
+        current = qidx+1;
+        showCurrent();
+      }
+    }
+
+    function showCurrent(){
+      document.querySelectorAll('.q').forEach(div=>{
+        div.style.display = div.dataset.idx == current ? 'block' : 'none';
+      });
+      updateProgress();
+    }
+
+    function updateProgress(){
+      const done = answers.filter(a => a !== null).length;
+      const prog = Math.round(done / qa.length * 100);
+      document.getElementById('prog').style.width = prog + '%';
+      document.getElementById('qcount').textContent = `已答 ${done} / ${qa.length}`;
+      // 控制按钮显示
+      document.getElementById('prev').style.display = current===0 ? 'none' : '';
+      document.getElementById('next').style.display = current===qa.length-1 ? 'none' : '';
+      document.getElementById('submit').style.display = done===qa.length ? '' : 'none';
+    }
+
+    document.getElementById('prev').addEventListener('click', ()=>{
+      if (current>0) current--;
+      showCurrent();
+    });
+    document.getElementById('next').addEventListener('click', ()=>{
+      if (current < qa.length-1) current++;
+      showCurrent();
+    });
+
+    document.getElementById('submit').addEventListener('click', ()=>{
+      if (answers.some(a=>a===null)){
+        alert('请完成所有题目再提交。');
+        return;
+      }
+      showResult();
+    });
+
+    function showResult(){
+      // 统计得分
+      const totals = [0,0,0,0,0];
+      qa.forEach((item, qi) => {
+        const sel = answers[qi];
+        const vec = item.opts[sel].v;
+        for (let i=0;i<5;i++) totals[i] += vec[i];
+      });
+      // 找最大
+      const max = Math.max(...totals);
+      const topIdxs = [];
+      totals.forEach((t,i)=>{ if (t===max) topIdxs.push(i); });
+      // 构建结果文本
+      const primary = categories[topIdxs[0]].name;
+      const detailArea = document.getElementById('resultArea');
+      detailArea.innerHTML = '';
+      const h = document.createElement('h2');
+      h.textContent = `你的首要搞钱天赋： ${primary}`;
+      detailArea.appendChild(h);
+      const p = document.createElement('div');
+      p.className = 'small';
+      p.style.marginTop='6px';
+      p.innerHTML = getInterpretation(topIdxs, totals);
+      detailArea.appendChild(p);
+
+      // 展示得分条
+      const bars = document.createElement('div');
+      bars.className = 'bars';
+      totals.forEach((t,i)=>{
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        const lab = document.createElement('div');
+        lab.className = 'label';
+        lab.innerHTML = `<span>${categories[i].name}</span><span>${t}</span>`;
+        const meter = document.createElement('div');
+        meter.className = 'meter';
+        const inner = document.createElement('i');
+        const width = Math.round((t / Math.max(1,Math.max(...totals))) * 100);
+        inner.style.width = width + '%';
+        meter.appendChild(inner);
+        bar.appendChild(lab);
+        bar.appendChild(meter);
+        bars.appendChild(bar);
+      });
+      detailArea.appendChild(bars);
+
+      // 建议与行动步骤
+      const sug = document.createElement('div');
+      sug.style.marginTop='12px';
+      sug.innerHTML = getSuggestions(topIdxs);
+      detailArea.appendChild(sug);
+
+      // 分享复制
+      const share = document.createElement('div');
+      share.className = 'share-area';
+      share.style.marginTop='10px';
+      const copy = document.createElement('button');
+      copy.className = 'copybtn';
+      copy.textContent = '复制结果文字';
+      copy.addEventListener('click', ()=> {
+        const text = compileShareText(categories, totals, topIdxs);
+        navigator.clipboard?.writeText(text).then(()=> {
+          copy.textContent = '已复制 ✔';
+          setTimeout(()=> copy.textContent = '复制结果文字', 2000);
+        }, ()=> alert('复制失败，请手动选择复制'));
+      });
+      const retake = document.createElement('button');
+      retake.className = 'copybtn';
+      retake.textContent = '重新测试';
+      retake.addEventListener('click', ()=> {
+        answers = new Array(qa.length).fill(null);
+        current = 0;
+        renderQuestions();
+        document.getElementById('resultArea').style.display = 'none';
+      });
+      share.appendChild(copy);
+      share.appendChild(retake);
+      detailArea.appendChild(share);
+
+      detailArea.style.display = 'block';
+      document.getElementById('resultArea').style.display = 'block';
+      // 滚动到结果
+      detailArea.scrollIntoView({behavior:'smooth'});
+    }
+
+    function getInterpretation(topIdxs, totals){
+      // 如果并列，说明多面向
+      if (topIdxs.length>1){
+        const names = topIdxs.map(i=>categories[i].name).join('、');
+        return `<strong>你的得分呈现多重优势：</strong> ${names}。你具备多种可转化为收益的特征，建议结合这些方向做复合策略。`;
+      }
+      const i = topIdxs[0];
+      switch(i){
+        case 0:
+          return `<strong>创业型特质明显。</strong> 你偏好快速试错、放大规模并承担风险。适合创建公司、产品或服务并通过增长获取回报。`;
+        case 1:
+          return `<strong>创意/自由职业倾向。</strong> 你更看重表达与自由，适合内容创作、设计、艺术和个人品牌变现。`;
+        case 2:
+          return `<strong>技术/技能变现优势。</strong> 你适合通过专业技能承接项目、技术服务或进入高薪技术岗位。`;
+        case 3:
+          return `<strong>销售与人脉导向。</strong> 你擅长与人打交道、谈判与关系经营，适合销售、商务拓展、渠道与公关类岗位。`;
+        case 4:
+          return `<strong>投资/被动收入思维。</strong> 你更注重长期复利与资产配置，适合学习投资、资产打理与系统化被动收入。`;
+        default:
+          return '';
+      }
+    }
+
+    function getSuggestions(topIdxs){
+      const i = topIdxs[0];
+      const common = `<div style="margin-top:8px"><strong>快速行动建议：</strong><ul>
+        <li>明确 1 个短期目标（1-3 个月）并制定可执行的日程。</li>
+        <li>把你的时间分配为学习/执行/反馈三部分，持续动手验证。</li>
+        <li>优先做能带来收入或显著学习曲线的事情，避免“无限准备”。</li>
+      </ul></div>`;
+      switch(i){
+        case 0:
+          return `<div><strong>为创业家准备的具体步骤：</strong>
+            <ol>
+              <li>列出 3 个你能测试的商业想法，找出其中最可行的 MVP。</li>
+              <li>30 天内做第一个付费客户验证（哪怕是小额）。</li>
+              <li>学习基础财务与增长策略，关注用户获取成本与留存。</li>
+            </ol>${common}</div>`;
+        case 1:
+          return `<div><strong>为自由/创意者准备的具体步骤：</strong>
+            <ol>
+              <li>建立个人作品集或内容渠道（如微信公众号、短视频、博客）。</li>
+              <li>制作至少 5 个能代表你的作品/课程/商品并进行变现尝试。</li>
+              <li>学习变现渠道（平台分成、赞助、付费社群、商业合作）。</li>
+            </ol>${common}</div>`;
+        case 2:
+          return `<div><strong>为技术专才准备的具体步骤：</strong>
+            <ol>
+              <li>列出当前最有市场价值的 2-3 项技术/工具并打卡学习。</li>
+              <li>做 2 个能展示技能的实战项目并发布在简历/平台上。</li>
+              <li>尝试自由职业平台接单或定位为高级顾问提高单价。</li>
+            </ol>${common}</div>`;
+        case 3:
+          return `<div><strong>为销售/交际型准备的具体步骤：</strong>
+            <ol>
+              <li>整理你的关系清单，选 20 个有潜力的目标建立联系。</li>
+              <li>练习价值沟通与谈判技巧，准备 1 个可以出售的服务或合作方案。</li>
+              <li>把“每周跟进”的习惯做成系统，记录触达与结果。</li>
+            </ol>${common}</div>`;
+        case 4:
+          return `<div><strong>为投资/被动型准备的具体步骤：</strong>
+            <ol>
+              <li>先做风险测评并建立应急基金（3-6 个月支出）。</li>
+              <li>学习资产配置基础（如股票、债券、指数基金、房地产与被动收入工具）。</li>
+              <li>从小额开始定投，记录并复利滚动你的资产池。</li>
+            </ol>${common}</div>`;
+        default:
+          return common;
+      }
+    }
+
+    function compileShareText(categories, totals, topIdxs){
+      const lines = [];
+      lines.push('搞钱天赋测试结果：');
+      topIdxs.forEach(i => lines.push(`首要：${categories[i].name}`));
+      lines.push('各项得分：');
+      categories.forEach((c, idx)=> lines.push(`${c.name}：${totals[idx]}`));
+      lines.push('测试来自本地运行的“搞钱天赋测试”。仅供参考。');
+      return lines.join('\n');
+    }
+
+    // 初始化
+    renderQuestions();
+  </script>
+</body>
+</html>
+```
+
+使用说明：
+- 将以上代码保存为 HTML 文件（例如 gangqian-test.html）并用浏览器打开即可运行。
+- 如果你希望：增加题目、调整判分权重、或把结果上传到服务器统计，告诉我你想要的改动，我可以帮你改写对应部分。
+
+**下一步建议：**
+- **想要更专业的判定**：可增加更多题、引入心理学量表（需注明来源）。
+- **想把结果存库并分析人群**：我可以帮你加上后端接口设计与统计视图（csv/可视化）。
