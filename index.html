@@ -212,7 +212,6 @@
           {t:"靠人脉资源不断获得机会", v:[0,0,0,2,0]},
           {t:"资产在后台稳步产生现金流", v:[0,0,0,0,2]}
       ]},
-      /* 新增的 4 道题 */
       { q: "在团队协作中，你最喜欢的角色是？", opts: [
           {t:"决策者：决定方向并带领大家冲刺", v:[2,0,0,1,0]},
           {t:"灵感师：提供意想不到的创意和风格", v:[0,2,0,0,0]},
@@ -357,10 +356,14 @@
 
     function renderRadar(dataValues) {
       const ctx = document.getElementById('radarCanvas').getContext('2d');
+      const baseLabels = ['创业家', '自由/创意', '技术专才', '销售/交际', '投资/被动'];
+      // 在标签中加入分数显示
+      const labelsWithScores = baseLabels.map((name, i) => `${name} (${dataValues[i]})`);
+
       radarChart = new Chart(ctx, {
         type: 'radar',
         data: {
-          labels: ['创业家', '自由/创意', '技术专才', '销售/交际', '投资/被动'],
+          labels: labelsWithScores,
           datasets: [{
             data: dataValues,
             backgroundColor: 'rgba(99, 102, 241, 0.15)',
@@ -382,7 +385,10 @@
               grid: { color: '#e2e8f0' },
               angleLines: { color: '#e2e8f0' },
               ticks: { display: false, stepSize: 2 },
-              pointLabels: { font: { size: 12 }, color: '#64748b' }
+              pointLabels: { 
+                font: { size: 12, weight: '600' }, 
+                color: '#475569' 
+              }
             }
           },
           plugins: { legend: { display: false } }
@@ -423,7 +429,7 @@
 
     function copyResult() {
       const winnerName = document.querySelector('h2').innerText;
-      const text = `我在【搞钱天赋测试】中测出了“${winnerName}”，这是我的财富属性雷达图！你也来测测。`;
+      const text = `我在【搞钱天赋测试】中测出了“${winnerName}”，快来看看你的天赋分布！`;
       navigator.clipboard.writeText(text).then(() => alert("结果文字已复制，快去分享吧！"));
     }
 
