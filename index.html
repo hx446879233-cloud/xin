@@ -3,16 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>搞钱天赋测试 — 你的性格适合靠什么赚钱？</title>
+  <title>搞钱天赋测试 2.0 — 找到你的财富密码</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
-      --primary: #6366f1; /* 活力紫色 */
+      --primary: #6366f1;
+      --primary-soft: #eef2ff;
       --secondary: #a5b4fc;
-      --bg: #f8fafc; /* 浅灰色背景 */
+      --bg: #f8fafc;
       --card-bg: #ffffff;
       --text: #1e293b;
-      --accent: #f43f5e; /* 点缀红 */
+      --text-light: #64748b;
+      --accent: #f43f5e;
     }
     body { 
       background: var(--bg); 
@@ -20,25 +22,37 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       line-height: 1.6;
       margin: 0;
+      padding: 0;
     }
-    .wrap { max-width: 500px; margin: 0 auto; padding: 20px; }
+    .wrap { max-width: 500px; margin: 0 auto; padding: 20px; box-sizing: border-box; }
+    
+    /* 顶部导航 */
+    header { display: flex; align-items: center; gap: 15px; margin-bottom: 24px; }
+    .logo { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 20px; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
+    header h1 { font-size: 20px; margin: 0; color: var(--text); }
+    
     .card { 
       background: var(--card-bg); 
-      border-radius: 24px; 
+      border-radius: 28px; 
       padding: 24px; 
-      box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+      box-shadow: 0 10px 30px rgba(0,0,0,0.04); 
+      border: 1px solid rgba(226, 232, 240, 0.8);
     }
-    header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-    header h1 { font-size: 22px; margin: 0; color: var(--primary); }
-    
-    .intro { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; gap: 10px; }
-    .small { font-size: 12px; color: #64748b; }
-    
+
+    /* 进度条样式 */
+    .intro { margin-bottom: 24px; }
+    .progress-container { display: flex; align-items: center; gap: 12px; }
+    .progress { flex: 1; height: 8px; border-radius: 10px; background: #f1f5f9; overflow: hidden; }
+    .progress i { display: block; height: 100%; background: var(--primary); transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); width: 0%; }
+    .q-count { font-size: 13px; font-weight: 600; color: var(--primary); min-width: 60px; text-align: right; }
+
+    /* 选项样式 */
+    .q h3 { font-size: 18px; margin: 0 0 20px 0; line-height: 1.4; }
     .opt { 
-      background: #f1f5f9; 
+      background: #f8fafc; 
       border: 2px solid transparent; 
-      border-radius: 16px; 
-      padding: 16px; 
+      border-radius: 18px; 
+      padding: 16px 20px; 
       margin-bottom: 12px;
       transition: all 0.2s ease;
       font-size: 16px;
@@ -46,75 +60,92 @@
       width: 100%;
       color: var(--text);
       cursor: pointer;
+      display: block;
     }
-    .opt:active { transform: scale(0.98); }
+    .opt:hover { background: #f1f5f9; }
     .opt.active { 
-      background: #eef2ff; 
+      background: var(--primary-soft); 
       border-color: var(--primary); 
       color: var(--primary); 
-      font-weight: bold;
+      font-weight: 600;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
     }
     
-    .actions { display: flex; gap: 10px; margin-top: 20px; }
-    button { border: none; cursor: pointer; font-weight: 600; }
+    .actions { display: flex; gap: 12px; margin-top: 24px; }
+    button { border: none; cursor: pointer; font-weight: 600; transition: all 0.2s ease; }
     button#next, button#submit {
-      flex: 2;
+      flex: 1;
       background: var(--primary);
       color: white;
       padding: 16px;
       border-radius: 16px;
-      font-size: 18px;
+      font-size: 16px;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
     }
     button#prev {
-      flex: 1;
-      background: #e2e8f0;
-      color: #475569;
-      padding: 16px;
+      padding: 16px 24px;
       border-radius: 16px;
+      background: #f1f5f9;
+      color: var(--text-light);
     }
 
-    .progress { height: 8px; border-radius: 4px; background: #e2e8f0; margin: 10px 0; overflow: hidden; }
-    .progress i { display: block; height: 100%; background: var(--primary); transition: width 0.3s ease; width: 0%; }
+    /* 结果页优化 */
+    .result { text-align: center; }
+    .result h2 { font-size: 24px; color: var(--primary); margin: 0 0 8px 0; }
+    .result-tagline { font-size: 14px; color: var(--text-light); margin-bottom: 24px; }
 
-    /* 结果页样式 */
-    .result h2 { text-align: center; color: var(--primary); margin-bottom: 10px; }
-    .chart-container { margin: 20px 0; position: relative; height: 300px; width: 100%; }
-    .bars { margin-top: 20px; }
-    .bar { margin-bottom: 12px; }
-    .bar .label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
-    .bar .meter { height: 6px; background: #f1f5f9; border-radius: 3px; overflow: hidden; }
-    .bar .meter i { display: block; height: 100%; background: var(--secondary); }
-    
-    .share-area { display: flex; gap: 10px; }
-    .copybtn { flex: 1; padding: 12px; border-radius: 12px; background: #f1f5f9; font-size: 14px; margin-top: 15px; }
-    
-    footer { text-align: center; margin-top: 30px; opacity: 0.6; padding-bottom: 40px; }
+    /* 雷达图居中关键代码 */
+    .chart-box { 
+      width: 100%; 
+      max-width: 320px; 
+      margin: 0 auto 30px auto; 
+      position: relative; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #radarCanvas { width: 100% !important; height: auto !important; }
+
+    .score-bars { margin: 30px 0; text-align: left; }
+    .bar-item { margin-bottom: 15px; }
+    .bar-info { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; font-weight: 500; }
+    .bar-track { height: 6px; background: #f1f5f9; border-radius: 10px; overflow: hidden; }
+    .bar-fill { height: 100%; background: var(--secondary); border-radius: 10px; transition: width 1s ease-out; }
+
+    /* 详细建议板块 */
+    .suggestion-box { text-align: left; background: #f8fafc; border-radius: 20px; padding: 20px; margin-top: 24px; }
+    .suggestion-box h4 { margin: 0 0 12px 0; color: var(--text); display: flex; align-items: center; gap: 8px; }
+    .suggestion-box ol, .suggestion-box ul { padding-left: 20px; margin: 0; font-size: 14px; color: var(--text); }
+    .suggestion-box li { margin-bottom: 8px; }
+    .quick-tips { border-top: 1px dashed #cbd5e1; margin-top: 15px; padding-top: 15px; }
+
+    .btn-group { display: flex; gap: 12px; margin-top: 30px; }
+    .btn-secondary { flex: 1; background: #f1f5f9; color: var(--text); padding: 14px; border-radius: 14px; font-size: 14px; }
+    .btn-primary { flex: 1; background: var(--primary); color: white; padding: 14px; border-radius: 14px; font-size: 14px; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2); }
+
+    footer { text-align: center; margin-top: 40px; padding-bottom: 40px; font-size: 12px; color: var(--text-light); }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#a5b4fc);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:20px">$</div>
+      <div class="logo">￥</div>
       <div>
         <h1>搞钱天赋测试</h1>
-        <p class="small">探索你的性格更适合哪种搞钱方式</p>
       </div>
     </header>
 
     <div class="card">
       <div id="quiz-ui">
         <div class="intro">
-          <div style="flex:1">
-            <div class="progress" aria-hidden="true"><i id="prog"></i></div>
-            <div class="small" id="qcount">已答 0 / 8</div>
-          </div>
-          <div style="text-align:right">
-            <div class="small">预计时长</div>
-            <strong>2 分钟</strong>
+          <div class="progress-container">
+            <div class="progress"><i id="prog"></i></div>
+            <div class="q-count" id="qcount">0 / 8</div>
           </div>
         </div>
 
-        <div class="questions" id="questions"></div>
+        <div id="questions"></div>
 
         <div class="actions">
           <button id="prev" style="display:none">上一步</button>
@@ -127,8 +158,8 @@
     </div>
 
     <footer>
-      <div class="small">仅供性格参考 · 非专业财务建议</div>
-      <div class="small">Version 1.1 · Powered by Gemini</div>
+      仅供性格与职业偏好参考 · 非财务建议<br>
+      © 2024 搞钱天赋实验室
     </footer>
   </div>
 
@@ -193,11 +224,11 @@
     ];
 
     const categories = [
-      {id:'entre', name:'创业家'},
-      {id:'crea', name:'自由创意'},
-      {id:'tech', name:'技术专才'},
-      {id:'sales', name:'销售交际'},
-      {id:'invest', name:'投资/被动'}
+      {id:'entre', name:'创业家', desc: '天生的破局者，擅长在不确定中寻找规模化机会。'},
+      {id:'crea', name:'自由/创意', desc: '靠才华和审美吃饭，自由是你最大的生产力。'},
+      {id:'tech', name:'技术专才', desc: '硬核实力派，深耕领域是你的聚宝盆。'},
+      {id:'sales', name:'销售/交际', desc: '人脉就是你的钱包，沟通是你最强的杠杆。'},
+      {id:'invest', name:'投资/被动', desc: '追求系统化躺赚，让资产在后台稳步产生现金流。'}
     ];
 
     let answers = new Array(qa.length).fill(null);
@@ -211,7 +242,7 @@
         const div = document.createElement('div');
         div.className = 'q';
         div.style.display = idx===current ? 'block' : 'none';
-        div.innerHTML = `<h3 style="margin-bottom:20px">${idx+1}. ${item.q}</h3>`;
+        div.innerHTML = `<h3>${item.q}</h3>`;
         const optsDiv = document.createElement('div');
         item.opts.forEach((op, oi) => {
           const b = document.createElement('button');
@@ -239,7 +270,7 @@
     function updateUI(){
       const done = answers.filter(a => a !== null).length;
       document.getElementById('prog').style.width = (done / qa.length * 100) + '%';
-      document.getElementById('qcount').textContent = `已答 ${done} / ${qa.length}`;
+      document.getElementById('qcount').textContent = `${done} / ${qa.length}`;
       document.getElementById('prev').style.display = current > 0 ? 'block' : 'none';
       document.getElementById('next').style.display = (current < qa.length - 1) ? 'block' : 'none';
       document.getElementById('submit').style.display = done === qa.length ? 'block' : 'none';
@@ -256,81 +287,124 @@
         if(sel !== null) item.opts[sel].v.forEach((val, i) => totals[i] += val);
       });
 
-      const max = Math.max(...totals);
-      const topIdxs = totals.map((t, i) => t === max ? i : -1).filter(i => i !== -1);
+      const maxScore = Math.max(...totals);
+      const topIdx = totals.indexOf(maxScore);
+      const winner = categories[topIdx];
       
       document.getElementById('quiz-ui').style.display = 'none';
       const resArea = document.getElementById('resultArea');
       resArea.style.display = 'block';
 
       resArea.innerHTML = `
-        <h2>${categories[topIdxs[0]].name}型天赋</h2>
-        <p class="small" style="text-align:center">${getInterpretation(topIdxs)}</p>
-        <div class="chart-container"><canvas id="radarCanvas"></canvas></div>
-        <div class="bars">${categories.map((c, i) => `
-          <div class="bar">
-            <div class="label"><span>${c.name}</span><span>${totals[i]}</span></div>
-            <div class="meter"><i style="width:${(totals[i]/max*100)}%"></i></div>
+        <h2>${winner.name}型天赋</h2>
+        <div class="result-tagline">${winner.desc}</div>
+        
+        <div class="chart-box">
+          <canvas id="radarCanvas"></canvas>
+        </div>
+
+        <div class="score-bars">
+          ${categories.map((c, i) => `
+            <div class="bar-item">
+              <div class="bar-info"><span>${c.name}</span><span>${totals[i]}分</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width: ${(totals[i]/maxScore*100)}%"></div></div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="suggestion-box">
+          <h4>🎯 为${winner.name}型准备的具体步骤</h4>
+          ${getDetailedSteps(topIdx)}
+          <div class="quick-tips">
+            <h4>⚡ 快速行动建议</h4>
+            <ul>
+              <li><strong>明确 1 个短期目标：</strong>设定 1-3 个月内可执行的日程。</li>
+              <li><strong>三部曲时间分配：</strong>把时间分配为 学习/执行/反馈 三部分。</li>
+              <li><strong>拒绝“无限准备”：</strong>优先做能带来直接收入或显著学习曲线的事。</li>
+            </ul>
           </div>
-        `).join('')}</div>
-        <div style="margin-top:20px; font-size:14px;">${getSuggestions(topIdxs[0])}</div>
-        <div class="share-area">
-          <button class="copybtn" onclick="location.reload()">重新测试</button>
-          <button class="copybtn" style="background:var(--primary);color:white" onclick="copyResult()">复制结果</button>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn-secondary" onclick="location.reload()">重新测试</button>
+          <button class="btn-primary" onclick="copyResult()">复制结果文字</button>
         </div>
       `;
 
       renderRadar(totals);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function renderRadar(dataValues) {
       const ctx = document.getElementById('radarCanvas').getContext('2d');
-      if (radarChart) radarChart.destroy();
       radarChart = new Chart(ctx, {
         type: 'radar',
         data: {
-          labels: categories.map(c => c.name),
+          labels: ['创业家', '自由/创意', '技术专才', '销售/交际', '投资/被动'],
           datasets: [{
             data: dataValues,
-            backgroundColor: 'rgba(99, 102, 241, 0.2)',
+            backgroundColor: 'rgba(99, 102, 241, 0.15)',
             borderColor: '#6366f1',
             pointBackgroundColor: '#6366f1',
-            borderWidth: 2
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: '#6366f1',
+            borderWidth: 3
           }]
         },
         options: {
-          scales: { r: { min: 0, ticks: { display: false } } },
+          responsive: true,
+          maintainAspectRatio: true,
+          scales: {
+            r: {
+              min: 0,
+              beginAtZero: true,
+              grid: { color: '#e2e8f0' },
+              angleLines: { color: '#e2e8f0' },
+              ticks: { display: false, stepSize: 2 },
+              pointLabels: { font: { size: 12 }, color: '#64748b' }
+            }
+          },
           plugins: { legend: { display: false } }
         }
       });
     }
 
-    function getInterpretation(topIdxs){
-      if(topIdxs.length > 1) return "你是个复合型人才，在多个领域都有搞钱潜力！";
-      const desc = [
-        "天生的破局者，擅长在不确定中寻找规模化机会。",
-        "靠才华和审美吃饭，自由是你最大的生产力。",
-        "硬核实力派，深耕领域是你的聚宝盆。",
-        "人脉就是你的钱包，沟通是你最强的杠杆。",
-        "不仅会赚钱，更懂如何让钱生钱，追求系统化躺赚。"
+    function getDetailedSteps(idx) {
+      const allSteps = [
+        `<ol>
+          <li><strong>MVP验证：</strong>列出 3 个想法，30天内完成第一个付费客户验证。</li>
+          <li><strong>增长学习：</strong>学习基础财务与增长策略，关注用户获取成本。</li>
+          <li><strong>规模化思维：</strong>寻找可以流程化、自动化的环节。</li>
+        </ol>`,
+        `<ol>
+          <li><strong>渠道建设：</strong>建立微信、短视频或小红书等内容分发阵地。</li>
+          <li><strong>作品集打包：</strong>制作至少 5 个代表作，形成可展示的变现方案。</li>
+          <li><strong>变现路径：</strong>探索付费社群、平台分成或商业合作渠道。</li>
+        </ol>`,
+        `<ol>
+          <li><strong>技能盘点：</strong>列出当前最有市场价值的 2-3 项核心工具并深钻。</li>
+          <li><strong>实战发布：</strong>在简历或专业平台上发布 2 个展示硬核实力的项目。</li>
+          <li><strong>顾问定位：</strong>尝试承接高单价的专项顾问或自由职业项目。</li>
+        </ol>`,
+        `<ol>
+          <li><strong>关系清单：</strong>整理 20 个有潜力的目标联系人，主动建立链接。</li>
+          <li><strong>谈判练习：</strong>准备 1 个可出售的方案，练习价值沟通。</li>
+          <li><strong>跟进系统：</strong>建立每周触达计划，并详细记录反馈结果。</li>
+        </ol>`,
+        `<ol>
+          <li><strong>风险测评：</strong>建立 3-6 个月的应急基金，确保心态稳健。</li>
+          <li><strong>资产配置：</strong>学习指数基金、债券或房地产等长效配置工具。</li>
+          <li><strong>复利启动：</strong>从小额定投开始，记录并感受时间带来的复利效应。</li>
+        </ol>`
       ];
-      return desc[topIdxs[0]];
-    }
-
-    function getSuggestions(idx){
-      const sugs = [
-        "<strong>建议：</strong>寻找可规模化的痛点，从小规模MVP开始测试。",
-        "<strong>建议：</strong>开始经营个人IP，建立属于你的作品集库。",
-        "<strong>建议：</strong>锁定高价值技能，尝试通过顾问或私活实现技能溢价。",
-        "<strong>建议：</strong>梳理人脉资产，寻找信息差带来的撮合机会。",
-        "<strong>建议：</strong>学习资产配置，尽早开启你的复利计划。"
-      ];
-      return sugs[idx];
+      return allSteps[idx];
     }
 
     function copyResult() {
-      const text = "我在搞钱天赋测试中测出了“" + document.querySelector('h2').innerText + "”，快来看看你的！";
-      navigator.clipboard.writeText(text).then(() => alert("结果已复制，快去分享吧！"));
+      const winnerName = document.querySelector('h2').innerText;
+      const text = `我在【搞钱天赋测试】中测出了“${winnerName}”，这是我的财富属性雷达图！你也来测测：[链接]`;
+      navigator.clipboard.writeText(text).then(() => alert("结果文字已复制，快去分享吧！"));
     }
 
     renderQuestions();
