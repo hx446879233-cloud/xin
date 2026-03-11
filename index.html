@@ -26,7 +26,6 @@
     }
     .wrap { max-width: 500px; margin: 0 auto; padding: 20px; box-sizing: border-box; }
     
-    /* 顶部导航 */
     header { display: flex; align-items: center; gap: 15px; margin-bottom: 24px; }
     .logo { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 20px; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
     header h1 { font-size: 20px; margin: 0; color: var(--text); }
@@ -39,14 +38,12 @@
       border: 1px solid rgba(226, 232, 240, 0.8);
     }
 
-    /* 进度条样式 */
     .intro { margin-bottom: 24px; }
     .progress-container { display: flex; align-items: center; gap: 12px; }
     .progress { flex: 1; height: 8px; border-radius: 10px; background: #f1f5f9; overflow: hidden; }
     .progress i { display: block; height: 100%; background: var(--primary); transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); width: 0%; }
-    .q-count { font-size: 13px; font-weight: 600; color: var(--primary); min-width: 60px; text-align: right; }
+    .q-count { font-size: 13px; font-weight: 600; color: var(--primary); min-width: 65px; text-align: right; }
 
-    /* 选项样式 */
     .q h3 { font-size: 18px; margin: 0 0 20px 0; line-height: 1.4; }
     .opt { 
       background: #f8fafc; 
@@ -90,12 +87,10 @@
       color: var(--text-light);
     }
 
-    /* 结果页优化 */
     .result { text-align: center; }
     .result h2 { font-size: 24px; color: var(--primary); margin: 0 0 8px 0; }
     .result-tagline { font-size: 14px; color: var(--text-light); margin-bottom: 24px; }
 
-    /* 雷达图居中关键代码 */
     .chart-box { 
       width: 100%; 
       max-width: 320px; 
@@ -113,7 +108,6 @@
     .bar-track { height: 6px; background: #f1f5f9; border-radius: 10px; overflow: hidden; }
     .bar-fill { height: 100%; background: var(--secondary); border-radius: 10px; transition: width 1s ease-out; }
 
-    /* 详细建议板块 */
     .suggestion-box { text-align: left; background: #f8fafc; border-radius: 20px; padding: 20px; margin-top: 24px; }
     .suggestion-box h4 { margin: 0 0 12px 0; color: var(--text); display: flex; align-items: center; gap: 8px; }
     .suggestion-box ol, .suggestion-box ul { padding-left: 20px; margin: 0; font-size: 14px; color: var(--text); }
@@ -141,25 +135,22 @@
         <div class="intro">
           <div class="progress-container">
             <div class="progress"><i id="prog"></i></div>
-            <div class="q-count" id="qcount">0 / 8</div>
+            <div class="q-count" id="qcount">0 / 12</div>
           </div>
         </div>
-
         <div id="questions"></div>
-
         <div class="actions">
           <button id="prev" style="display:none">上一步</button>
           <button id="next">下一题</button>
           <button id="submit" style="display:none">查看我的天赋结果</button>
         </div>
       </div>
-
       <div id="resultArea" style="display:none" class="result"></div>
     </div>
 
     <footer>
       仅供性格与职业偏好参考 · 非财务建议<br>
-      © 2024 搞钱天赋实验室
+      © 2026 搞钱天赋实验室
     </footer>
   </div>
 
@@ -220,14 +211,43 @@
           {t:"因技能被高薪聘用或承接项目", v:[0,0,2,0,0]},
           {t:"靠人脉资源不断获得机会", v:[0,0,0,2,0]},
           {t:"资产在后台稳步产生现金流", v:[0,0,0,0,2]}
+      ]},
+      /* 新增的 4 道题 */
+      { q: "在团队协作中，你最喜欢的角色是？", opts: [
+          {t:"决策者：决定方向并带领大家冲刺", v:[2,0,0,1,0]},
+          {t:"灵感师：提供意想不到的创意和风格", v:[0,2,0,0,0]},
+          {t:"攻坚手：解决最硬核的具体技术问题", v:[0,0,2,0,0]},
+          {t:"协调员：搞定外部资源和内部沟通", v:[0,0,0,2,0]},
+          {t:"精算师：评估风险并看好利润底线", v:[0,0,0,0,2]}
+      ]},
+      { q: "当压力巨大的时候，你通常的反应是？", opts: [
+          {t:"更兴奋，寻找可以反败为胜的商机", v:[2,0,0,0,0]},
+          {t:"沉浸在创作中，以此作为情绪出口", v:[0,2,0,0,0]},
+          {t:"钻研底层逻辑，试图从技术面拆解压力", v:[0,0,2,0,0]},
+          {t:"找人倾诉或找合作伙伴共同承担", v:[0,0,0,2,0]},
+          {t:"冷静审视账面资产，看是否有撤退方案", v:[0,0,0,0,2]}
+      ]},
+      { q: "你如何看待“职业稳定性”？", opts: [
+          {t:"稳定意味着平庸，不断变化才有暴富机会", v:[2,0,0,0,0]},
+          {t:"只要能让我表达个性，怎么变都行", v:[0,2,0,0,0]},
+          {t:"稳定是深耕核心竞争力的前提", v:[0,0,2,0,0]},
+          {t:"稳定的人脉网比稳定的工作更重要", v:[0,0,0,2,0]},
+          {t:"资产产生的被动收益才是终极的稳定", v:[0,0,0,0,2]}
+      ]},
+      { q: "学习一项新东西时，你最关注的是什么？", opts: [
+          {t:"它能不能被快速商业化并变现", v:[2,0,0,1,0]},
+          {t:"它能不能赋予我的作品独特的风格", v:[0,2,0,0,0]},
+          {t:"它的底层架构和技术实现原理", v:[0,0,2,0,0]},
+          {t:"谁在用它，我能不能借此认识更多人", v:[0,0,0,2,0]},
+          {t:"它的投资回报率和长期增值潜力", v:[0,0,0,0,2]}
       ]}
     ];
 
     const categories = [
       {id:'entre', name:'创业家', desc: '天生的破局者，擅长在不确定中寻找规模化机会。'},
-      {id:'crea', name:'自由/创意', desc: '靠才华和审美吃饭，自由是你最大的生产力。'},
-      {id:'tech', name:'技术专才', desc: '硬核实力派，深耕领域是你的聚宝盆。'},
-      {id:'sales', name:'销售/交际', desc: '人脉就是你的钱包，沟通是你最强的杠杆。'},
+      {id:'crea', name:'自由/创意', desc: '靠才华、视角和审美吃饭，个人独特性是你最大的资产。'},
+      {id:'tech', name:'技术专才', desc: '硬核实力派，深耕专业领域是你的聚宝盆。'},
+      {id:'sales', name:'销售/交际', desc: '人脉就是你的钱包，沟通与撮合是你最强的杠杆。'},
       {id:'invest', name:'投资/被动', desc: '追求系统化躺赚，让资产在后台稳步产生现金流。'}
     ];
 
@@ -378,9 +398,9 @@
           <li><strong>规模化思维：</strong>寻找可以流程化、自动化的环节。</li>
         </ol>`,
         `<ol>
-          <li><strong>渠道建设：</strong>建立微信、短视频或小红书等内容分发阵地。</li>
-          <li><strong>作品集打包：</strong>制作至少 5 个代表作，形成可展示的变现方案。</li>
-          <li><strong>变现路径：</strong>探索付费社群、平台分成或商业合作渠道。</li>
+          <li><strong>核心价值锚点：</strong>深入挖掘你最独特的审美、逻辑或表达方式，定义你的“非共识”竞争优势。</li>
+          <li><strong>创意产品化：</strong>将零散的灵感转化为可复制、可展示的成果包（作品集或方案），降低他人的理解成本。</li>
+          <li><strong>精准路径匹配：</strong>寻找与你创意属性契合的土壤（如垂直平台、深度合作或特定圈层），而非盲目追逐全网公域流量。</li>
         </ol>`,
         `<ol>
           <li><strong>技能盘点：</strong>列出当前最有市场价值的 2-3 项核心工具并深钻。</li>
@@ -403,7 +423,7 @@
 
     function copyResult() {
       const winnerName = document.querySelector('h2').innerText;
-      const text = `我在【搞钱天赋测试】中测出了“${winnerName}”，这是我的财富属性雷达图！你也来测测：[链接]`;
+      const text = `我在【搞钱天赋测试】中测出了“${winnerName}”，这是我的财富属性雷达图！你也来测测。`;
       navigator.clipboard.writeText(text).then(() => alert("结果文字已复制，快去分享吧！"));
     }
 
