@@ -1,439 +1,353 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>搞钱天赋测试 2.0 — 找到你的财富密码</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    :root {
-      --primary: #6366f1;
-      --primary-soft: #eef2ff;
-      --secondary: #a5b4fc;
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --text: #1e293b;
-      --text-light: #64748b;
-      --accent: #f43f5e;
-    }
-    body { 
-      background: var(--bg); 
-      color: var(--text); 
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      line-height: 1.6;
-      margin: 0;
-      padding: 0;
-    }
-    .wrap { max-width: 500px; margin: 0 auto; padding: 20px; box-sizing: border-box; }
-    
-    header { display: flex; align-items: center; gap: 15px; margin-bottom: 24px; }
-    .logo { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 20px; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
-    header h1 { font-size: 20px; margin: 0; color: var(--text); }
-    
-    .card { 
-      background: var(--card-bg); 
-      border-radius: 28px; 
-      padding: 24px; 
-      box-shadow: 0 10px 30px rgba(0,0,0,0.04); 
-      border: 1px solid rgba(226, 232, 240, 0.8);
-    }
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hu Xin Architecture Portfolio</title>
+    <meta name="description" content="Hu Xin / 胡鑫 Architecture Portfolio">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <nav class="site-nav" aria-label="Portfolio navigation">
+      <a href="#cover">HU XIN</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#transformation">Transformation</a>
+      <a href="#visualization">Visualization</a>
+    </nav>
 
-    .intro { margin-bottom: 24px; }
-    .progress-container { display: flex; align-items: center; gap: 12px; }
-    .progress { flex: 1; height: 8px; border-radius: 10px; background: #f1f5f9; overflow: hidden; }
-    .progress i { display: block; height: 100%; background: var(--primary); transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); width: 0%; }
-    .q-count { font-size: 13px; font-weight: 600; color: var(--primary); min-width: 65px; text-align: right; }
+    <main class="portfolio">
+      <section class="sheet cover-sheet reveal" id="cover" aria-labelledby="cover-title">
+        <figure class="cover-visual">
+          <img src="_figma_assets/cover.jpg" alt="High-rise commercial tower cover image" loading="eager">
+        </figure>
+        <div class="cover-panel">
+          <p class="eyebrow">AI DESIGN / ARCHITECTURE / VISUALIZATION</p>
+          <h1 id="cover-title">HU XIN</h1>
+          <p class="name-cn">胡鑫</p>
+          <div class="rule"></div>
+          <p class="portfolio-title">ARCHITECTURE PORTFOLIO</p>
+          <p class="portfolio-title-cn">建筑作品集</p>
+        </div>
+        <span class="page-number">01</span>
+      </section>
 
-    .q h3 { font-size: 18px; margin: 0 0 20px 0; line-height: 1.4; }
-    .opt { 
-      background: #f8fafc; 
-      border: 2px solid transparent; 
-      border-radius: 18px; 
-      padding: 16px 20px; 
-      margin-bottom: 12px;
-      transition: all 0.2s ease;
-      font-size: 16px;
-      text-align: left;
-      width: 100%;
-      color: var(--text);
-      cursor: pointer;
-      display: block;
-    }
-    .opt:hover { background: #f1f5f9; }
-    .opt.active { 
-      background: var(--primary-soft); 
-      border-color: var(--primary); 
-      color: var(--primary); 
-      font-weight: 600;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
-    }
-    
-    .actions { display: flex; gap: 12px; margin-top: 24px; }
-    button { border: none; cursor: pointer; font-weight: 600; transition: all 0.2s ease; }
-    button#next, button#submit {
-      flex: 1;
-      background: var(--primary);
-      color: white;
-      padding: 16px;
-      border-radius: 16px;
-      font-size: 16px;
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
-    }
-    button#prev {
-      padding: 16px 24px;
-      border-radius: 16px;
-      background: #f1f5f9;
-      color: var(--text-light);
-    }
+      <section class="sheet reveal" id="architecture">
+        <header class="sheet-header">
+          <p>Architecture Design</p>
+          <h2>Signature Project</h2>
+          <span>标志性项目</span>
+        </header>
+        <figure class="image-frame hero-image">
+          <img src="_figma_assets/tower_detail.jpg" alt="High-rise commercial tower detail" loading="lazy">
+          <figcaption>High-rise commercial tower / 高层商业塔楼</figcaption>
+        </figure>
+        <p class="quiet-note">A luminous commercial podium and vertical landmark, composed as a single continuous urban gesture.</p>
+        <span class="page-number">02</span>
+      </section>
 
-    .result { text-align: center; }
-    .result h2 { font-size: 24px; color: var(--primary); margin: 0 0 8px 0; }
-    .result-tagline { font-size: 14px; color: var(--text-light); margin-bottom: 24px; }
-
-    .chart-box { 
-      width: 100%; 
-      max-width: 320px; 
-      margin: 0 auto 30px auto; 
-      position: relative; 
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    #radarCanvas { width: 100% !important; height: auto !important; }
-
-    .score-bars { margin: 30px 0; text-align: left; }
-    .bar-item { margin-bottom: 15px; }
-    .bar-info { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; font-weight: 500; }
-    .bar-track { height: 6px; background: #f1f5f9; border-radius: 10px; overflow: hidden; }
-    .bar-fill { height: 100%; background: var(--secondary); border-radius: 10px; transition: width 1s ease-out; }
-
-    .suggestion-box { text-align: left; background: #f8fafc; border-radius: 20px; padding: 20px; margin-top: 24px; }
-    .suggestion-box h4 { margin: 0 0 12px 0; color: var(--text); display: flex; align-items: center; gap: 8px; }
-    .suggestion-box ol, .suggestion-box ul { padding-left: 20px; margin: 0; font-size: 14px; color: var(--text); }
-    .suggestion-box li { margin-bottom: 8px; }
-    .quick-tips { border-top: 1px dashed #cbd5e1; margin-top: 15px; padding-top: 15px; }
-
-    .btn-group { display: flex; gap: 12px; margin-top: 30px; }
-    .btn-secondary { flex: 1; background: #f1f5f9; color: var(--text); padding: 14px; border-radius: 14px; font-size: 14px; }
-    .btn-primary { flex: 1; background: var(--primary); color: white; padding: 14px; border-radius: 14px; font-size: 14px; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2); }
-
-    footer { text-align: center; margin-top: 40px; padding-bottom: 40px; font-size: 12px; color: var(--text-light); }
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <header>
-      <div class="logo">￥</div>
-      <div>
-        <h1>搞钱天赋测试</h1>
-      </div>
-    </header>
-
-    <div class="card">
-      <div id="quiz-ui">
-        <div class="intro">
-          <div class="progress-container">
-            <div class="progress"><i id="prog"></i></div>
-            <div class="q-count" id="qcount">0 / 12</div>
+      <section class="sheet reveal">
+        <header class="sheet-header">
+          <p>Architecture Design</p>
+          <h2>Residential Entrance</h2>
+          <span>住宅入口与单体</span>
+        </header>
+        <div class="split-layout tall-left">
+          <figure class="image-frame">
+            <img src="_figma_assets/res_tower.jpg" alt="Residential tower facade" loading="lazy">
+            <figcaption>Residential tower facade / 住宅单体立面</figcaption>
+          </figure>
+          <div>
+            <figure class="image-frame">
+              <img src="_figma_assets/res_lobby.jpg" alt="Residential lobby perspective" loading="lazy">
+              <figcaption>Residential lobby perspective / 住宅入口大堂</figcaption>
+            </figure>
+            <p class="quiet-note">Soft vertical proportions, warm material contrast and ceremonial arrival sequence.</p>
           </div>
         </div>
-        <div id="questions"></div>
-        <div class="actions">
-          <button id="prev" style="display:none">上一步</button>
-          <button id="next">下一题</button>
-          <button id="submit" style="display:none">查看我的天赋结果</button>
+        <span class="page-number">03</span>
+      </section>
+
+      <section class="sheet reveal">
+        <header class="sheet-header">
+          <p>Architecture Design</p>
+          <h2>Commercial Design</h2>
+          <span>商业与社区界面</span>
+        </header>
+        <div class="stack-layout">
+          <figure class="image-frame">
+            <img src="_figma_assets/res_commercial.jpg" alt="Residential commercial frontage" loading="lazy">
+            <figcaption>Residential commercial frontage / 住宅商业界面</figcaption>
+          </figure>
+          <figure class="image-frame">
+            <img src="_figma_assets/bio_commercial.jpg" alt="Talent apartment retail podium" loading="lazy">
+            <figcaption>Talent apartment retail podium / 人才公寓商业</figcaption>
+          </figure>
         </div>
-      </div>
-      <div id="resultArea" style="display:none" class="result"></div>
-    </div>
+        <span class="page-number">04</span>
+      </section>
 
-    <footer>
-      仅供性格与职业偏好参考 · 非财务建议<br>
-      © 2026 搞钱天赋实验室
-    </footer>
-  </div>
-
-  <script>
-    const qa = [
-      { q: "遇到新机会你更倾向于？", opts: [
-          {t: "立刻尝试，哪怕有风险", v:[2,0,0,1,0]},
-          {t: "先凭创意做一个小试验", v:[1,2,0,0,0]},
-          {t: "评估数据和可行性再行动", v:[0,0,2,0,0]},
-          {t: "先跟朋友/人脉沟通测反馈", v:[0,0,0,2,0]},
-          {t: "投入到能产生被动收益的工具", v:[0,0,0,0,2]}
-      ]},
-      { q: "你的工作节奏更偏好什么？", opts: [
-          {t:"高强度、目标导向", v:[2,0,0,1,0]},
-          {t:"自由安排、做自己喜欢的事", v:[0,2,0,0,0]},
-          {t:"稳定、有体系性地深耕技能", v:[0,0,2,0,0]},
-          {t:"社交频繁、靠人脉推动结果", v:[1,0,0,2,0]},
-          {t:"构建可复利的资产与系统", v:[0,0,0,0,2]}
-      ]},
-      { q: "如果要赚钱，你最不想做的是？", opts: [
-          {t:"没有掌控权，被人指挥", v:[2,0,0,0,0]},
-          {t:"天天重复没有创造性的活", v:[0,2,0,0,0]},
-          {t:"面对不断变化的无逻辑问题", v:[0,0,2,0,0]},
-          {t:"孤军作战，不与人打交道", v:[0,0,0,2,0]},
-          {t:"把所有钱都放着不动或赌运气", v:[0,0,0,0,2]}
-      ]},
-      { q: "你解决问题时常用的方法是？", opts: [
-          {t:"快速迭代并从错误中学习", v:[2,0,0,1,0]},
-          {t:"用创意或新颖方式突破", v:[0,2,0,0,0]},
-          {t:"用技术或结构化流程解决", v:[0,0,2,0,0]},
-          {t:"动用人脉与谈判达成", v:[0,0,0,2,0]},
-          {t:"设计长期收益模型并部署资金", v:[0,0,0,0,2]}
-      ]},
-      { q: "当你赚到一笔钱，你通常怎么处理？", opts: [
-          {t:"投入到下一个项目扩大规模", v:[2,0,0,0,0]},
-          {t:"买灵感工具或体验提升创意", v:[0,2,0,0,0]},
-          {t:"投在自我提升或设备提高产出", v:[0,0,2,0,0]},
-          {t:"拓展人脉或做公关", v:[0,0,0,2,0]},
-          {t:"配置到长期资产或被动收益", v:[0,0,0,0,2]}
-      ]},
-      { q: "你认为好的赚钱方式应该具备？", opts: [
-          {t:"可以快速放大，规模效应强", v:[2,0,0,0,0]},
-          {t:"能表达个性并带来自由感", v:[0,2,0,0,0]},
-          {t:"门槛高但稳定可信赖", v:[0,0,2,0,0]},
-          {t:"人际网络能显著提升结果", v:[0,0,0,2,0]},
-          {t:"长期复利、少动维护", v:[0,0,0,0,2]}
-      ]},
-      { q: "面对失败你通常会？", opts: [
-          {t:"迅速调整策略再出发", v:[2,0,0,0,0]},
-          {t:"把失败变成创作素材或经验", v:[0,2,0,0,0]},
-          {t:"分析原因、优化技术与流程", v:[0,0,2,0,0]},
-          {t:"寻求外部支持和合作者", v:[0,0,0,2,0]},
-          {t:"用更稳妥的工具减少未来风险", v:[0,0,0,0,2]}
-      ]},
-      { q: "你理想中的收入来源是？", opts: [
-          {t:"自己创业，收入随规模上升", v:[2,0,0,0,0]},
-          {t:"靠才华与作品持续变现", v:[0,2,0,0,0]},
-          {t:"因技能被高薪聘用或承接项目", v:[0,0,2,0,0]},
-          {t:"靠人脉资源不断获得机会", v:[0,0,0,2,0]},
-          {t:"资产在后台稳步产生现金流", v:[0,0,0,0,2]}
-      ]},
-      { q: "在团队协作中，你最喜欢的角色是？", opts: [
-          {t:"决策者：决定方向并带领大家冲刺", v:[2,0,0,1,0]},
-          {t:"灵感师：提供意想不到的创意和风格", v:[0,2,0,0,0]},
-          {t:"攻坚手：解决最硬核的具体技术问题", v:[0,0,2,0,0]},
-          {t:"协调员：搞定外部资源和内部沟通", v:[0,0,0,2,0]},
-          {t:"精算师：评估风险并看好利润底线", v:[0,0,0,0,2]}
-      ]},
-      { q: "当压力巨大的时候，你通常的反应是？", opts: [
-          {t:"更兴奋，寻找可以反败为胜的商机", v:[2,0,0,0,0]},
-          {t:"沉浸在创作中，以此作为情绪出口", v:[0,2,0,0,0]},
-          {t:"钻研底层逻辑，试图从技术面拆解压力", v:[0,0,2,0,0]},
-          {t:"找人倾诉或找合作伙伴共同承担", v:[0,0,0,2,0]},
-          {t:"冷静审视账面资产，看是否有撤退方案", v:[0,0,0,0,2]}
-      ]},
-      { q: "你如何看待“职业稳定性”？", opts: [
-          {t:"稳定意味着平庸，不断变化才有暴富机会", v:[2,0,0,0,0]},
-          {t:"只要能让我表达个性，怎么变都行", v:[0,2,0,0,0]},
-          {t:"稳定是深耕核心竞争力的前提", v:[0,0,2,0,0]},
-          {t:"稳定的人脉网比稳定的工作更重要", v:[0,0,0,2,0]},
-          {t:"资产产生的被动收益才是终极的稳定", v:[0,0,0,0,2]}
-      ]},
-      { q: "学习一项新东西时，你最关注的是什么？", opts: [
-          {t:"它能不能被快速商业化并变现", v:[2,0,0,1,0]},
-          {t:"它能不能赋予我的作品独特的风格", v:[0,2,0,0,0]},
-          {t:"它的底层架构和技术实现原理", v:[0,0,2,0,0]},
-          {t:"谁在用它，我能不能借此认识更多人", v:[0,0,0,2,0]},
-          {t:"它的投资回报率和长期增值潜力", v:[0,0,0,0,2]}
-      ]}
-    ];
-
-    const categories = [
-      {id:'entre', name:'创业家', desc: '天生的破局者，擅长在不确定中寻找规模化机会。'},
-      {id:'crea', name:'自由/创意', desc: '靠才华、视角和审美吃饭，个人独特性是你最大的资产。'},
-      {id:'tech', name:'技术专才', desc: '硬核实力派，深耕专业领域是你的聚宝盆。'},
-      {id:'sales', name:'销售/交际', desc: '人脉就是你的钱包，沟通与撮合是你最强的杠杆。'},
-      {id:'invest', name:'投资/被动', desc: '追求系统化躺赚，让资产在后台稳步产生现金流。'}
-    ];
-
-    let answers = new Array(qa.length).fill(null);
-    let current = 0;
-    let radarChart = null;
-
-    function renderQuestions(){
-      const questionsEl = document.getElementById('questions');
-      questionsEl.innerHTML = '';
-      qa.forEach((item, idx) => {
-        const div = document.createElement('div');
-        div.className = 'q';
-        div.style.display = idx===current ? 'block' : 'none';
-        div.innerHTML = `<h3>${item.q}</h3>`;
-        const optsDiv = document.createElement('div');
-        item.opts.forEach((op, oi) => {
-          const b = document.createElement('button');
-          b.className = `opt ${answers[idx] === oi ? 'active' : ''}`;
-          b.textContent = op.t;
-          b.onclick = () => selectOption(idx, oi);
-          optsDiv.appendChild(b);
-        });
-        div.appendChild(optsDiv);
-        questionsEl.appendChild(div);
-      });
-      updateUI();
-    }
-
-    function selectOption(qidx, optidx){
-      answers[qidx] = optidx;
-      if (current < qa.length - 1) {
-        current++;
-        renderQuestions();
-      } else {
-        updateUI();
-      }
-    }
-
-    function updateUI(){
-      const done = answers.filter(a => a !== null).length;
-      document.getElementById('prog').style.width = (done / qa.length * 100) + '%';
-      document.getElementById('qcount').textContent = `${done} / ${qa.length}`;
-      document.getElementById('prev').style.display = current > 0 ? 'block' : 'none';
-      document.getElementById('next').style.display = (current < qa.length - 1) ? 'block' : 'none';
-      document.getElementById('submit').style.display = done === qa.length ? 'block' : 'none';
-    }
-
-    document.getElementById('prev').onclick = () => { if(current>0) {current--; renderQuestions();} };
-    document.getElementById('next').onclick = () => { if(current<qa.length-1) {current++; renderQuestions();} };
-    document.getElementById('submit').onclick = showResult;
-
-    function showResult(){
-      const totals = [0,0,0,0,0];
-      qa.forEach((item, qi) => {
-        const sel = answers[qi];
-        if(sel !== null) item.opts[sel].v.forEach((val, i) => totals[i] += val);
-      });
-
-      const maxScore = Math.max(...totals);
-      const topIdx = totals.indexOf(maxScore);
-      const winner = categories[topIdx];
-      
-      document.getElementById('quiz-ui').style.display = 'none';
-      const resArea = document.getElementById('resultArea');
-      resArea.style.display = 'block';
-
-      resArea.innerHTML = `
-        <h2>${winner.name}型天赋</h2>
-        <div class="result-tagline">${winner.desc}</div>
-        
-        <div class="chart-box">
-          <canvas id="radarCanvas"></canvas>
+      <section class="sheet reveal">
+        <header class="sheet-header">
+          <p>Architecture Design</p>
+          <h2>Public / Office</h2>
+          <span>公共与办公建筑</span>
+        </header>
+        <div class="stack-layout">
+          <figure class="image-frame">
+            <img src="_figma_assets/factory_office.jpg" alt="Factory office building" loading="lazy">
+            <figcaption>Factory office building / 工厂办公楼设计</figcaption>
+          </figure>
+          <figure class="image-frame">
+            <img src="_figma_assets/summit.jpg" alt="Summit waterfront scene" loading="lazy">
+            <figcaption>Summit event waterfront scene / 三江峰会</figcaption>
+          </figure>
         </div>
+        <span class="page-number">05</span>
+      </section>
 
-        <div class="score-bars">
-          ${categories.map((c, i) => `
-            <div class="bar-item">
-              <div class="bar-info"><span>${c.name}</span><span>${totals[i]}分</span></div>
-              <div class="bar-track"><div class="bar-fill" style="width: ${(totals[i]/maxScore*100)}%"></div></div>
-            </div>
-          `).join('')}
+      <section class="sheet reveal">
+        <header class="sheet-header">
+          <p>AI Design Studies</p>
+          <h2>Interior Studies</h2>
+          <span>室内空间研究</span>
+        </header>
+        <div class="triple-stack">
+          <figure class="image-frame">
+            <img src="_figma_assets/interior_1.jpg" alt="Hospitality dining interior" loading="lazy">
+            <figcaption>Hospitality dining interior / 餐饮室内空间</figcaption>
+          </figure>
+          <figure class="image-frame">
+            <img src="_figma_assets/interior_2.jpg" alt="Sales office interior" loading="lazy">
+            <figcaption>Sales office interior / 接待办公空间</figcaption>
+          </figure>
+          <figure class="image-frame">
+            <img src="_figma_assets/interior_3.jpg" alt="Lobby and reception interior" loading="lazy">
+            <figcaption>Lobby and reception interior / 大堂接待空间</figcaption>
+          </figure>
         </div>
+        <span class="page-number">06</span>
+      </section>
 
-        <div class="suggestion-box">
-          <h4>🎯 为${winner.name}型准备的具体步骤</h4>
-          ${getDetailedSteps(topIdx)}
-          <div class="quick-tips">
-            <h4>⚡ 快速行动建议</h4>
-            <ul>
-              <li><strong>明确 1 个短期目标：</strong>设定 1-3 个月内可执行的日程。</li>
-              <li><strong>三部曲时间分配：</strong>把时间分配为 学习/执行/反馈 三部分。</li>
-              <li><strong>拒绝“无限准备”：</strong>优先做能带来直接收入或显著学习曲线的事。</li>
-            </ul>
-          </div>
+      <section class="sheet reveal">
+        <header class="sheet-header">
+          <p>AI Design Studies</p>
+          <h2>Landscape / Exhibition</h2>
+          <span>景观与示范区</span>
+        </header>
+        <div class="split-layout equal">
+          <figure class="image-frame">
+            <img src="_figma_assets/river_landscape.jpg" alt="Riverfront night landscape" loading="lazy">
+            <figcaption>Riverfront night landscape / 滨江景观改造</figcaption>
+          </figure>
+          <figure class="image-frame">
+            <img src="_figma_assets/demo_zone.jpg" alt="Demonstration area" loading="lazy">
+            <figcaption>Demonstration area / 示范区</figcaption>
+          </figure>
         </div>
+        <p class="quiet-note">Compact contrast between urban celebration and soft garden arrival.</p>
+        <span class="page-number">07</span>
+      </section>
 
-        <div class="btn-group">
-          <button class="btn-secondary" onclick="location.reload()">重新测试</button>
-          <button class="btn-primary" onclick="copyResult()">复制结果文字</button>
+      <section class="sheet reveal" id="transformation">
+        <header class="sheet-header">
+          <p>Before / After</p>
+          <h2>Campus Transformation</h2>
+          <span>大学校门改造</span>
+        </header>
+        <div class="ba-group">
+          <figure class="image-frame before">
+            <span class="tag">BEFORE</span>
+            <img src="_figma_assets/campus_before.jpg" alt="Campus gate before renovation" loading="lazy">
+            <figcaption>Before / 改造前</figcaption>
+          </figure>
+          <figure class="image-frame after">
+            <span class="tag">AFTER</span>
+            <img src="_figma_assets/campus_after.jpg" alt="Campus gate after renovation" loading="lazy">
+            <figcaption>After / 改造后</figcaption>
+          </figure>
         </div>
-      `;
+        <span class="page-number">08</span>
+      </section>
 
-      renderRadar(totals);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+      <section class="sheet reveal">
+        <header class="sheet-header">
+          <p>Before / After</p>
+          <h2>Public Building Transformation</h2>
+          <span>公共建筑改造</span>
+        </header>
+        <div class="ba-group">
+          <figure class="image-frame before">
+            <span class="tag">BEFORE</span>
+            <img src="_figma_assets/public_before.jpg" alt="Public building before renovation" loading="lazy">
+            <figcaption>Before / 改造前</figcaption>
+          </figure>
+          <figure class="image-frame after">
+            <span class="tag">AFTER</span>
+            <img src="_figma_assets/public_after.jpg" alt="Public building after renovation" loading="lazy">
+            <figcaption>After / 改造后</figcaption>
+          </figure>
+        </div>
+        <span class="page-number">09</span>
+      </section>
 
-    function renderRadar(dataValues) {
-      const ctx = document.getElementById('radarCanvas').getContext('2d');
-      const baseLabels = ['创业家', '自由/创意', '技术专才', '销售/交际', '投资/被动'];
-      // 在标签中加入分数显示
-      const labelsWithScores = baseLabels.map((name, i) => `${name} (${dataValues[i]})`);
+      <section class="sheet reveal">
+        <header class="sheet-header">
+          <p>Before / After</p>
+          <h2>Rural / Scenic Transformation</h2>
+          <span>景区入口改造</span>
+        </header>
+        <div class="ba-group">
+          <figure class="image-frame before">
+            <span class="tag">BEFORE</span>
+            <img src="_figma_assets/scenic_before.jpg" alt="Scenic entrance before renovation" loading="lazy">
+            <figcaption>Before / 改造前</figcaption>
+          </figure>
+          <figure class="image-frame after">
+            <span class="tag">AFTER</span>
+            <img src="_figma_assets/scenic_after.jpg" alt="Scenic entrance after renovation" loading="lazy">
+            <figcaption>After / 改造后</figcaption>
+          </figure>
+        </div>
+        <span class="page-number">10</span>
+      </section>
 
-      radarChart = new Chart(ctx, {
-        type: 'radar',
-        data: {
-          labels: labelsWithScores,
-          datasets: [{
-            data: dataValues,
-            backgroundColor: 'rgba(99, 102, 241, 0.15)',
-            borderColor: '#6366f1',
-            pointBackgroundColor: '#6366f1',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: '#6366f1',
-            borderWidth: 3
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: true,
-          scales: {
-            r: {
-              min: 0,
-              beginAtZero: true,
-              grid: { color: '#e2e8f0' },
-              angleLines: { color: '#e2e8f0' },
-              ticks: { display: false, stepSize: 2 },
-              pointLabels: { 
-                font: { size: 12, weight: '600' }, 
-                color: '#475569' 
-              }
-            }
-          },
-          plugins: { legend: { display: false } }
-        }
-      });
-    }
+      <section class="sheet reveal">
+        <header class="sheet-header">
+          <p>Before / After</p>
+          <h2>Factory Transformation</h2>
+          <span>工厂改造</span>
+        </header>
+        <div class="ba-group">
+          <figure class="image-frame before">
+            <span class="tag">BEFORE</span>
+            <img src="_figma_assets/factory_before.jpg" alt="Factory before renovation" loading="lazy">
+            <figcaption>Before / 改造前</figcaption>
+          </figure>
+          <figure class="image-frame after">
+            <span class="tag">AFTER</span>
+            <img src="_figma_assets/factory_after.jpg" alt="Factory after renovation" loading="lazy">
+            <figcaption>After / 改造后</figcaption>
+          </figure>
+        </div>
+        <span class="page-number">11</span>
+      </section>
 
-    function getDetailedSteps(idx) {
-      const allSteps = [
-        `<ol>
-          <li><strong>MVP验证：</strong>列出 3 个想法，30天内完成第一个付费客户验证。</li>
-          <li><strong>增长学习：</strong>学习基础财务与增长策略，关注用户获取成本。</li>
-          <li><strong>规模化思维：</strong>寻找可以流程化、自动化的环节。</li>
-        </ol>`,
-        `<ol>
-          <li><strong>核心价值锚点：</strong>深入挖掘你最独特的审美、逻辑或表达方式，定义你的“非共识”竞争优势。</li>
-          <li><strong>创意产品化：</strong>将零散的灵感转化为可复制、可展示的成果包（作品集或方案），降低他人的理解成本。</li>
-          <li><strong>精准路径匹配：</strong>寻找与你创意属性契合的土壤（如垂直平台、深度合作或特定圈层），而非盲目追逐全网公域流量。</li>
-        </ol>`,
-        `<ol>
-          <li><strong>技能盘点：</strong>列出当前最有市场价值的 2-3 项核心工具并深钻。</li>
-          <li><strong>实战发布：</strong>在简历或专业平台上发布 2 个展示硬核实力的项目。</li>
-          <li><strong>顾问定位：</strong>尝试承接高单价的专项顾问或自由职业项目。</li>
-        </ol>`,
-        `<ol>
-          <li><strong>关系清单：</strong>整理 20 个有潜力的目标联系人，主动建立链接。</li>
-          <li><strong>谈判练习：</strong>准备 1 个可出售的方案，练习价值沟通。</li>
-          <li><strong>跟进系统：</strong>建立每周触达计划，并详细记录反馈结果。</li>
-        </ol>`,
-        `<ol>
-          <li><strong>风险测评：</strong>建立 3-6 个月的应急基金，确保心态稳健。</li>
-          <li><strong>资产配置：</strong>学习指数基金、债券或房地产等长效配置工具。</li>
-          <li><strong>复利启动：</strong>从小额定投开始，记录并感受时间带来的复利效应。</li>
-        </ol>`
-      ];
-      return allSteps[idx];
-    }
+      <section class="sheet reveal">
+        <header class="sheet-header">
+          <p>Before / After</p>
+          <h2>Urban Street Transformation</h2>
+          <span>老旧街道改造</span>
+        </header>
+        <div class="ba-group">
+          <figure class="image-frame before">
+            <span class="tag">BEFORE</span>
+            <img src="_figma_assets/street_before.jpg" alt="Old street before renovation" loading="lazy">
+            <figcaption>Before / 改造前</figcaption>
+          </figure>
+          <figure class="image-frame after">
+            <span class="tag">AFTER</span>
+            <img src="_figma_assets/street_after.jpg" alt="Old street after renovation" loading="lazy">
+            <figcaption>After / 改造后</figcaption>
+          </figure>
+        </div>
+        <span class="page-number">12</span>
+      </section>
 
-    function copyResult() {
-      const winnerName = document.querySelector('h2').innerText;
-      const text = `我在【搞钱天赋测试】中测出了“${winnerName}”，快来看看你的天赋分布！`;
-      navigator.clipboard.writeText(text).then(() => alert("结果文字已复制，快去分享吧！"));
-    }
+      <section class="sheet reveal">
+        <header class="sheet-header">
+          <p>Before / After</p>
+          <h2>Dormitory Transformation</h2>
+          <span>宿舍改造</span>
+        </header>
+        <div class="ba-group">
+          <figure class="image-frame before">
+            <span class="tag">BEFORE</span>
+            <img src="_figma_assets/dorm_before.jpg" alt="Dormitory before renovation" loading="lazy">
+            <figcaption>Before / 改造前</figcaption>
+          </figure>
+          <figure class="image-frame after">
+            <span class="tag">AFTER</span>
+            <img src="_figma_assets/dorm_after.jpg" alt="Dormitory after renovation" loading="lazy">
+            <figcaption>After / 改造后</figcaption>
+          </figure>
+        </div>
+        <span class="page-number">13</span>
+      </section>
 
-    renderQuestions();
-  </script>
-</body>
+      <section class="sheet reveal" id="visualization">
+        <header class="sheet-header">
+          <p>Visualization</p>
+          <h2>Visualization Aerial</h2>
+          <span>规划鸟瞰表现</span>
+        </header>
+        <div class="stack-layout">
+          <figure class="image-frame">
+            <img src="_figma_assets/aerial_1.jpg" alt="Planning aerial visualization" loading="lazy">
+            <figcaption>Planning aerial visualization / 规划鸟瞰表现</figcaption>
+          </figure>
+          <figure class="image-frame">
+            <img src="_figma_assets/aerial_2.jpg" alt="AI aerial atmosphere" loading="lazy">
+            <figcaption>AI aerial atmosphere / 鸟瞰 AI 表现</figcaption>
+          </figure>
+        </div>
+        <span class="page-number">14</span>
+      </section>
+
+      <section class="sheet reveal">
+        <header class="sheet-header">
+          <p>Visualization</p>
+          <h2>Public Visualization</h2>
+          <span>公共建筑表现</span>
+        </header>
+        <div class="stack-layout">
+          <figure class="image-frame">
+            <img src="_figma_assets/public_viz_1.jpg" alt="Public architecture AI visualization" loading="lazy">
+            <figcaption>Public architecture AI visualization / 公共建筑 AI 表现</figcaption>
+          </figure>
+          <figure class="image-frame">
+            <img src="_figma_assets/public_viz_2.jpg" alt="Public architecture rendering" loading="lazy">
+            <figcaption>Public architecture rendering / 公共建筑表现</figcaption>
+          </figure>
+        </div>
+        <span class="page-number">15</span>
+      </section>
+
+      <section class="sheet reveal">
+        <header class="sheet-header">
+          <p>Visualization</p>
+          <h2>Visitor Center Series</h2>
+          <span>游客中心系列</span>
+        </header>
+        <div class="triple-stack">
+          <figure class="image-frame">
+            <img class="focus-lower" src="_figma_assets/visitor_1.jpg" alt="Visitor center study 01" loading="lazy">
+            <figcaption>Visitor center study 01 / 游客中心 D5 表现 01</figcaption>
+          </figure>
+          <figure class="image-frame">
+            <img src="_figma_assets/visitor_3.jpg" alt="Visitor center study 03" loading="lazy">
+            <figcaption>Visitor center study 03 / 游客中心 D5 表现 03</figcaption>
+          </figure>
+          <figure class="image-frame">
+            <img class="focus-lower" src="_figma_assets/visitor_4.jpg" alt="Visitor center study 04" loading="lazy">
+            <figcaption>Visitor center study 04 / 游客中心 D5 表现 04</figcaption>
+          </figure>
+        </div>
+        <span class="page-number">16</span>
+      </section>
+
+      <section class="sheet cover-sheet closing-sheet reveal">
+        <figure class="cover-visual">
+          <img src="_figma_assets/closing.jpg" alt="Visitor center D5 closing image" loading="lazy">
+        </figure>
+        <div class="cover-panel closing-panel">
+          <p class="eyebrow">Visualization</p>
+          <h2>VISUALIZATION AS ATMOSPHERE</h2>
+          <p class="name-small">HU XIN / 胡鑫</p>
+        </div>
+        <span class="page-number">17</span>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
 </html>
